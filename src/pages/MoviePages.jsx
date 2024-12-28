@@ -53,48 +53,48 @@ const ExtraInfo = styled.p`
 `;
 
 const MovieDetails = () => {
-    const { id } = useParams();
-    const [movie, setMovie] = useState(null);
+  const { id } = useParams();
+  const [movie, setMovie] = useState(null);
 
-    useEffect(() => {
-        const fetchMovieDetails = async () => {
-            const response = await axios.get(
-                `https://api.themoviedb.org/3/movie/${id}`,
-                {
-                    params: { api_key: '78b656f609e8668dd49fc490722e5285' },
-                }
-            );
-            setMovie(response.data);
-        };
+  useEffect(() => {
+    const fetchMovieDetails = async () => {
+      const response = await axios.get(
+        `https://api.themoviedb.org/3/movie/${id}`,
+        {
+          params: { api_key: '78b656f609e8668dd49fc490722e5285' },
+        }
+      );
+      setMovie(response.data);
+    };
 
-        fetchMovieDetails();
-    }, [id]);
+    fetchMovieDetails();
+  }, [id]);
 
-    if (!movie) {
-        return <Container>Loading...</Container>;
-    }
+  if (!movie) {
+    return <Container>Loading...</Container>;
+  }
 
-    return (
-        <Container>
-            <BackLink to="/">← Back to Home</BackLink>
-            <MovieContainer>
-                <Poster
-                    src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
-                    alt={movie.title}
-                />
-                <Info>
-                    <Title>{movie.title}</Title>
-                    <Overview>{movie.overview}</Overview>
-                    <ExtraInfo>
-                        <strong>Release Date:</strong> {movie.release_date}
-                    </ExtraInfo>
-                    <ExtraInfo>
-                        <strong>Rating:</strong> {movie.vote_average} / 10
-                    </ExtraInfo>
-                </Info>
-            </MovieContainer>
-        </Container>
-    );
+  return (
+    <Container>
+      <BackLink to="/">← Back to Home</BackLink>
+      <MovieContainer>
+        <Poster
+          src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+          alt={movie.title}
+        />
+        <Info>
+          <Title>{movie.title}</Title>
+          <Overview>{movie.overview}</Overview>
+          <ExtraInfo>
+            <strong>Release Date:</strong> {movie.release_date}
+          </ExtraInfo>
+          <ExtraInfo>
+            <strong>Rating:</strong> {movie.vote_average} / 10
+          </ExtraInfo>
+        </Info>
+      </MovieContainer>
+    </Container>
+  );
 };
 
 export default MovieDetails;
