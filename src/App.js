@@ -8,7 +8,7 @@ import MoviePages from './pages/MoviePages';
 const App = () => {
   return (
     <Routes>
-      <Route path="/" element={<Layout />}>
+      <Route path="/hw-react-movie/" element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="movies" element={<Movies />} />
         <Route path="movies/:id" element={<MoviePages />} />
