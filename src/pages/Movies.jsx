@@ -57,7 +57,7 @@ const Movies = () => {
   const query = searchParams.get('query') || '';
   const [movies, setMovies] = useState([]);
 
-  const handleSearch = async event => {
+  const handleSearch = async (event) => {
     event.preventDefault();
     const response = await axios.get(
       'https://api.themoviedb.org/3/search/movie',
@@ -68,18 +68,28 @@ const Movies = () => {
     setMovies(response.data.results);
   };
 
+  const handleAddFavorite = (movie) => {
+    const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    if (favorites.some((favorite) => favorite.id === movie.id)) {
+      alert('Этот фильм уже в избранном!');
+    } else {
+      favorites.push(movie);
+      localStorage.setItem('favorites', JSON.stringify(favorites));
+    }
+  };
+
   return (
     <Container>
       <Form onSubmit={handleSearch}>
         <Input
           type="text"
           value={query}
-          onChange={e => setSearchParams({ query: e.target.value })}
+          onChange={(e) => setSearchParams({ query: e.target.value })}
         />
         <Button type="submit">Search</Button>
       </Form>
       <MovieList>
-        {movies.map(movie => (
+        {movies.map((movie) => (
           <MovieItem key={movie.id}>
             <MovieLink to={`/movies/${movie.id}`}>{movie.title}</MovieLink>
           </MovieItem>

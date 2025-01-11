@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 
@@ -52,9 +52,30 @@ const ExtraInfo = styled.p`
   color: #555;
 `;
 
+const Button = styled.button`
+  padding: 8px 16px;
+  font-size: 16px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+
+  &:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+  }
+
+  &:active {
+    background-color: #1e7e34;
+  }
+`;
+
 const MovieDetails = () => {
   const { id } = useParams();
   const [movie, setMovie] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
@@ -69,6 +90,17 @@ const MovieDetails = () => {
 
     fetchMovieDetails();
   }, [id]);
+
+  const addToFavorites = () => {
+    const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    if (favorites.some((favorite) => favorite.id === movie.id)) {
+      alert('Этот фильм уже в избранном!');
+    } else {
+      favorites.push(movie);
+      localStorage.setItem('favorites', JSON.stringify(favorites));
+      navigate('/favorites');
+    }
+  };
 
   if (!movie) {
     return <Container>Loading...</Container>;
@@ -91,6 +123,7 @@ const MovieDetails = () => {
           <ExtraInfo>
             <strong>Rating:</strong> {movie.vote_average} / 10
           </ExtraInfo>
+          <Button onClick={addToFavorites}>Add to Favorites</Button>
         </Info>
       </MovieContainer>
     </Container>
